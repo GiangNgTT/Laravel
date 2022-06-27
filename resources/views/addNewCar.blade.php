@@ -11,7 +11,7 @@
 </head>
 
 <body>
-    <div class="container-fluid">
+    <div class="container fluid">
         <h2>Add new</h2>
         <a href="http://localhost:8000/cars">Back to list</a>
         @if ($errors->any())
@@ -23,22 +23,45 @@
             </ul>
         </div>
         @endif
-        <form class="form" action="" method="post" enctype= multipart/form-data>//phai co enctype= multipart/form-data neu ko nos ko hien thi 
-            @csrf
-            <label for="img" class="form-label"></label>
-            <input type="file" name="image" class="form-control" id="exampleInputEmail1" value="{{isset($image)?$image:''}}">
+        <!-- phai co enctype= multipart/form-data neu ko nos ko hien thi hinh anh  -->
+        <div>
+            <form action="{{route('cars.store')}}" class="was-validated" method="POST" enctype="multipart/form-data">
+                @csrf
 
-            <label for="exampleInputPassword1" class="form-label"></label>
-            <input type="text" name="description" class="form-control" id="exampleInputPassword1" value="{{isset($b)?$b:''}}" placeholder="Input description">
+                <label for="img" class="form-label"></label>
+                <img id="output" class="img-thumbnail" width="200px" src="/images/{{isset($car)?$car->image:''}}" alt="" />
+                <input type="file" name="image" class="form-control" onChange="loadFile(event)" required>
 
-            <label for="exampleInputPassword1" class="form-label"></label>
-            <input type="text" name="model" class="form-control" id="exampleInputPassword1" value="{{isset($b)?$b:''}}" placeholder="Input model">
+                <label for="" class="form-label"></label>
+                <input type="text" name="description" class="form-control" placeholder="Input description" required>
 
-            <label for="exampleInputPassword1" class="form-label"></label>
-            <input type="date" name="produced_on" class="form-control" id="exampleInputPassword1" value="{{isset($b)?$b:''}}" placeholder="Input produced-on"><br>
+                <label for="" class="form-label"></label>
+                <select class="form-select" aria-label="Default select example" name="mf_id">
+                    @foreach( $manufacturers as $manufacturer )
+                        <option value="{{ $manufacturer->id }}">{{ $manufacturer->mf_name }}</option>
+                    @endforeach
+                </select> 
 
-            <button type="submit" class="btn btn-primary">Add</button>
-        </form>
+                <label for="" class="form-label"></label>
+                <input type="text" name="model" class="form-control" placeholder="Input model" required>
+
+                <label for="" class="form-label"></label>
+                <input type="date" name="produced_on" class="form-control" placeholder="Input produced-on" required><br>
+
+                <button type="submit" class="btn btn-primary">Add</button>
+            </form>
+            <script>
+                const loadFile = (event) => {
+                    console.log("changed");
+                    var output = document.getElementById('output');
+                    output.src = URL.createObjectURL(event.target.files[0]);
+                    output.onload = function() {
+                        URL.revokeObjectURL(output.src) // free memory
+                    }
+                };
+            </script>
+        </div>
+
     </div>
 </body>
 

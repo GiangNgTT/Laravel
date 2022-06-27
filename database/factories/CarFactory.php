@@ -15,10 +15,11 @@ class CarFactory extends Factory
     public function definition()
     {
         return [
-            'image' => 'xe1.jpg',
+            'image' => $this->faker->name(),
             'description' => $this->faker->paragraph(),
             'model' => $this->faker->name(),
             'produced_on' => now(),   
+            'mf_id'=>rand(1, 10)
         ];
     }
 }

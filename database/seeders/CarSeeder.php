@@ -25,7 +25,7 @@ class CarSeeder extends Seeder
         //         'prodeduced_on' => Carbon::parse('01-01-2020'),
         //     ]);
         // }
-        Car::factory()->count(5)->create();
+        Car::factory(20)->count(5)->create();
         
         //
     }

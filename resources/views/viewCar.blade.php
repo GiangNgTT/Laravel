@@ -11,33 +11,70 @@
 </head>
 
 <body>
-    <a href="http://localhost:8000/cars/create">Add New</a>
-    <table class="table img-thumbnail">
-        <thead>
-            <th>ID</th>
-            <th>Image</th>
-            <!-- <th>Make</th> -->
-            <th>Model</th>
-            <th>Description</th>
-            <th>Produded_on</th>
-            <td colspan="2">Action</td>
-        </thead>
-        <tbody>
-            @foreach ($cars as $car)
-                <tr>
-                    <td>{{$car -> id}}</td>
-                    <td><img class="img-thumbnail" src="/images/{{$car -> image}}" class="img-fluid rounded-start" alt="..."></td>
-                    <td>{{ $car->model }}</td>
-                    <td>{{ $car->description }}</td>
-                    <td>{{ $car->produced_on }}</td>
-                    <td> 
-                        <button type="button" class="btn btn-primary">Edit</button>
-                        <button type="button" class="btn btn-primary">Delete</button>
-                    </td>
-                </tr>
-            @endforeach
-        </tbody>
-    </table>
+    <div class="container">
+        <!-- Hien thong bao cua success khi them thanh cong trong admin -->
+        <div>
+            @if(Session::has('success'))
+            <div class="alert alert-success">
+                {{
+                Session::get('success')
+            }}
+            </div>
+            @endif
+        </div>
+        <div>
+            <a href="http://localhost:8000/cars/create">Add New</a>
+            <h2>Danh sach xe</h2>
+            <table class="table img-thumbnail">
+                <thead>
+                    <th>ID</th>
+                    <th>Image</th>
+                    <th>Model</th>
+                    <th>Description</th>
+                    <th>Manufacturer</th>
+                    <th>Produded_on</th>
+                    <td colspan="2" width="">Action</td>
+                </thead>
+                <tbody>
+                    @foreach ($cars as $car)
+                    <form method="post" action="{{ route('cars.destroy', $car->id) }}">
+                        @csrf
+                        @method('delete')
+                        <tr>
+                            <td>{{$car -> id}}</td>
+                            <td><img class="img-thumbnail" width="200px" src="/images/{{$car -> image}}" class="img-fluid rounded-start" alt="..."></td>      
+                           
+                            <td>{{ $car->model }}</td>           
+                            <td>{{ $car->description }}</td>
+
+                            <td>{{ $car->manufacturers->mf_name }}</td>
+                            <td>{{ $car->produced_on }}</td>
+                            <td>
+                                <button type="button" class="btn btn-primary" onclick="window.location='{{ route( 'cars.edit', $car->id ) }}'">Edit</button>
+                            </td>
+                            <td>
+                                <div class="form-item center">
+                                    <button type="submit" class="btn btn-danger deleteBtn" onclick="return myConfirm(); window.location='{{ route( 'cars.destroy', $car->id ) }}'">Delete</button>
+                                </div>
+                            </td>
+                    </form>
+                    <script>
+                        function myConfirm() {
+                            var result = confirm("Are you sure you want to delete this car with all its post??");
+                            if (result == true) {
+                                return true;
+                            } else {
+                                return false;
+                            }
+                        }
+                    </script>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
+
 </body>
 
 </html>

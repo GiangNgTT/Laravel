@@ -25,24 +25,14 @@ Route::resource('cars', CarAdminController::class);
 
 
 
+
+
+
+
+
+
+
 // Route::get('viewCar', [CarAdminControllor::class, 'index'])
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 // Route::resource('cars', CarController::class);
